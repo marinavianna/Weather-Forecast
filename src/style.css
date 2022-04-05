@@ -1,0 +1,113 @@
+html {
+  height: 100%;
+}
+
+body {
+  font-family: "Quicksand", sans-serif;
+  background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+}
+
+h1 {
+  margin: 10px 0px;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+h3 {
+  text-align: center;
+}
+
+.container {
+  background-color: #fff;
+  margin: 30px auto;
+  border-radius: 10px;
+  max-width: 600px;
+  padding: 10px;
+}
+
+.current_weather {
+  font-size: 100px;
+}
+
+#tempcard {
+  margin: 5px;
+}
+
+#day {
+  justify-content: center;
+  font-size: 18px;
+}
+
+#symbol {
+  justify-content: center;
+  font-size: 50px;
+}
+
+#temp {
+  justify-content: center;
+  font-size: 12px;
+  text-align: center;
+}
+
+#units {
+  position: relative;
+}
+
+#units button {
+  font-size: 12px;
+  border-radius: 5px;
+}
+
+#celsius {
+  background-color: #e0c3fc;
+  border: 1px solid #e0c3fc;
+  transition: all 200ms ease-in-out;
+  position: absolute;
+  right: 120px;
+  top: -39px;
+}
+
+#fahrenheit {
+  background-color: #8ec5fc;
+  border: 1px solid #8ec5fc;
+  transition: all 200ms ease-in-out;
+  position: absolute;
+  right: 10px;
+  top: -39px;
+}
+
+#celsius:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+#fahrenheit:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+#search-addon:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+#current-location{
+  margin-top: 10px;
+  font-size: 12px;
+  color: #C72F33;
+  border: solid 1px #EFF2F4;
+  background-color: #EFF2F4;
+  border-radius: 4px;
+}
+
+#current-location:hover{
+
+  color: #EFF2F4;
+  border: solid 1px #C72F33;
+  background-color: #C72F33;
+  border-radius: 4px;
+  transition: all 200ms ease-in-out;
+  cursor: pointer;
+}
