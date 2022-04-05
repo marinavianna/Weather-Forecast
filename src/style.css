@@ -19,6 +19,12 @@ h3 {
   text-align: center;
 }
 
+h4 {
+  font-size: 10px;
+  margin: -10px auto;
+  text-align: center;
+}
+
 .container {
   background-color: #fff;
   margin: 30px auto;
@@ -93,21 +99,30 @@ h3 {
   opacity: 0.7;
 }
 
-#current-location{
+#current-location {
   margin-top: 10px;
   font-size: 12px;
-  color: #C72F33;
-  border: solid 1px #EFF2F4;
-  background-color: #EFF2F4;
+  color: #c72f33;
+  border: solid 1px #eff2f4;
+  background-color: #eff2f4;
   border-radius: 4px;
 }
 
-#current-location:hover{
-
-  color: #EFF2F4;
-  border: solid 1px #C72F33;
-  background-color: #C72F33;
+#current-location:hover {
+  color: #eff2f4;
+  border: solid 1px #c72f33;
+  background-color: #c72f33;
   border-radius: 4px;
   transition: all 200ms ease-in-out;
   cursor: pointer;
+}
+
+#github {
+  color: #ff00a0;
+  text-decoration: underline;
+}
+
+#github:hover {
+  cursor: pointer;
+  opacity: 0.7;
 }
