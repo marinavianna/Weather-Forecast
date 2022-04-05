@@ -81,8 +81,11 @@ function enterCity(event) {
 function showTemp(response) {
   currentMaxValue = Math.round(response.data.main.temp_max);
   currentMinValue = Math.round(response.data.main.temp_min);
-  currentMax.innerHTML = currentMaxValue + " ºC";
-  currentMin.innerHTML = currentMinValue + " ºC";
+  currentTempValue = Math.round(response.data.main.temp);
+  tempText.innerHTML = response.data.weather[0].description;
+  currentMax.innerHTML = currentMaxValue + "ºC";
+  currentMin.innerHTML = currentMinValue + "ºC";
+  currentTemp.innerHTML = currentTempValue + "ºC";
   city.innerHTML = response.data.name;
 }
 
@@ -92,6 +95,11 @@ let currentMax = document.querySelector("#current-max");
 let currentMaxValue = currentMax.innerHTML.replace("ºC", "").replace("ºF", "");
 let currentMin = document.querySelector("#current-min");
 let currentMinValue = currentMin.innerHTML.replace("ºC", "").replace("ºF", "");
+let currentTemp = document.querySelector("#current-temp");
+let currentTempValue = currentTemp.innerHTML
+  .replace("ºC", "")
+  .replace("ºF", "");
+let tempText = document.querySelector("#temp-text");
 
 let celsiusButton = document.querySelector("#celsius");
 
@@ -99,9 +107,11 @@ function getCelsiusTemp(event) {
   event.preventDefault();
   if (currentMin.innerHTML.charAt(currentMin.innerHTML.length - 1) === "F") {
     currentMinValue = Math.round((currentMinValue - 32) / (9 / 5));
-    currentMin.innerHTML = currentMinValue + " ºC";
+    currentMin.innerHTML = currentMinValue + "ºC";
     currentMaxValue = Math.round((currentMaxValue - 32) / (9 / 5));
-    currentMax.innerHTML = currentMaxValue + " ºC";
+    currentMax.innerHTML = currentMaxValue + "ºC";
+    currentTempValue = Math.round((currentTempValue - 32) / (9 / 5));
+    currentTemp.innerHTML = currentTempValue + "ºC";
   }
 }
 
@@ -113,9 +123,11 @@ function getFahrenheitTemp(event) {
   event.preventDefault();
   if (currentMin.innerHTML.charAt(currentMin.innerHTML.length - 1) === "C") {
     currentMinValue = Math.round(currentMinValue * (9 / 5) + 32);
-    currentMin.innerHTML = currentMinValue + " ºF";
+    currentMin.innerHTML = currentMinValue + "ºF";
     currentMaxValue = Math.round(currentMaxValue * (9 / 5) + 32);
-    currentMax.innerHTML = currentMaxValue + " ºF";
+    currentMax.innerHTML = currentMaxValue + "ºF";
+    currentTempValue = Math.round(currentTempValue * (9 / 5) + 32);
+    currentTemp.innerHTML = currentTempValue + "ºF";
   }
 }
 

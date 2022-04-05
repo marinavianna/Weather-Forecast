@@ -126,3 +126,21 @@ h4 {
   cursor: pointer;
   opacity: 0.7;
 }
+
+#current-temp {
+  font-weight: 400;
+  font-size: 24px;
+}
+
+#temp-text {
+  font-style: italic;
+  text-transform: capitalize;
+}
+
+#current-max {
+  font-weight: 500;
+}
+
+#temps > span {
+  padding: 0;
+}
