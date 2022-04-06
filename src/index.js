@@ -69,6 +69,7 @@ currentDate.innerHTML = `${day} ${hour}:${minute}`;
 let search = document.querySelector("#search-form");
 let city = document.querySelector("h1");
 let apiKey = "c4b4eb71226a8aa7e7735dea09da11f4";
+let currentIcon = document.querySelector(".current-weather");
 
 function enterCity(event) {
   event.preventDefault();
@@ -77,6 +78,8 @@ function enterCity(event) {
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${citySearch.value}&appid=${apiKey}&units=metric`;
   axios.get(apiUrl).then(showTemp);
 }
+
+let weatherIcon = "";
 
 function showTemp(response) {
   currentMaxValue = Math.round(response.data.main.temp_max);
@@ -87,6 +90,40 @@ function showTemp(response) {
   currentMin.innerHTML = currentMinValue + "ºC";
   currentTemp.innerHTML = currentTempValue + "ºC";
   city.innerHTML = response.data.name;
+  weatherIcon = response.data.weather[0].icon;
+  chooseIcon(response);
+}
+
+function chooseIcon(response) {
+  switch (weatherIcon.slice(0, 2)) {
+    case "01":
+      currentIcon.innerHTML = "☀️";
+      break;
+    case "02":
+      currentIcon.innerHTML = "🌤";
+      break;
+    case "03":
+      currentIcon.innerHTML = "⛅️";
+      break;
+    case "04":
+      currentIcon.innerHTML = "☁️";
+      break;
+    case "09":
+      currentIcon.innerHTML = "🌧";
+      break;
+    case "10":
+      currentIcon.innerHTML = "🌦";
+      break;
+    case "11":
+      currentIcon.innerHTML = "🌩";
+      break;
+    case "13":
+      currentIcon.innerHTML = "❄️";
+      break;
+    case "50":
+      currentIcon.innerHTML = "🌫";
+      break;
+  }
 }
 
 search.addEventListener("submit", enterCity);
