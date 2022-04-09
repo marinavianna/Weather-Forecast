@@ -94,46 +94,37 @@ function showTemp(response) {
   currentTemp.innerHTML = currentTempValue + "ºC";
   city.innerHTML = response.data.name;
   weatherIcon = response.data.weather[0].icon;
-  chooseIcon(response);
-  getForecast(response);
-}
-
-function getForecast(response) {
+  currentIcon.innerHTML = chooseIcon(weatherIcon);
   let lon = response.data.coord.lon;
   let lat = response.data.coord.lat;
-  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+  getForecast(lon, lat);
+}
+
+function getForecast(lon, lat) {
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
   axios.get(apiUrl).then(showForecast);
 }
 
-function chooseIcon(response) {
-  switch (weatherIcon.slice(0, 2)) {
+function chooseIcon(icon) {
+  switch (icon.slice(0, 2)) {
     case "01":
-      currentIcon.innerHTML = "☀️";
-      break;
+      return "☀️";
     case "02":
-      currentIcon.innerHTML = "🌤";
-      break;
+      return "🌤";
     case "03":
-      currentIcon.innerHTML = "⛅️";
-      break;
+      return "⛅️";
     case "04":
-      currentIcon.innerHTML = "☁️";
-      break;
+      return "☁️";
     case "09":
-      currentIcon.innerHTML = "🌧";
-      break;
+      return "🌧";
     case "10":
-      currentIcon.innerHTML = "🌦";
-      break;
+      return "🌦";
     case "11":
-      currentIcon.innerHTML = "🌩";
-      break;
+      return "🌩";
     case "13":
-      currentIcon.innerHTML = "❄️";
-      break;
+      return "❄️";
     case "50":
-      currentIcon.innerHTML = "🌫";
-      break;
+      return "🌫";
   }
 }
 
@@ -141,19 +132,22 @@ let forecast = document.querySelector("#forecast");
 
 function showForecast(response) {
   let forecastHTML = "";
-  let forecastDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
-  forecastDays.forEach(function (day) {
-    forecastHTML =
-      forecastHTML +
-      `<div class="col" id="tempcard">
-          <div class="row" id="day">${day}</div>
-          <div class="row" id="symbol">🌥</div>
+  let forecastDays = response.data.daily.slice(1, 6);
+  forecastDays.forEach(function (daydata) {
+    forecastHTML += `<div class="col" id="tempcard">
+          <div class="row" id="day">${
+            days[new Date(daydata.dt * 1000).getDay()]
+          }</div>
+          <div class="row" id="symbol">${chooseIcon(
+            daydata.weather[0].icon
+          )}</div>
           <div class="row" id="temp">
-            <span><strong>21ºC</strong>/16ºC</span>
+            <span><strong>${Math.round(
+              daydata.temp.max
+            )}ºC</strong>/${Math.round(daydata.temp.min)}ºC</span>
           </div>
         </div>`;
   });
-
   forecast.innerHTML = forecastHTML;
 }
 
