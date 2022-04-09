@@ -89,7 +89,6 @@ function showTemp(response) {
   windSpeed.innerHTML = `Wind speed: ${Math.round(
     response.data.wind.speed * 3.6
   )} km/h`;
-  console.log(response.data.wind.speed);
   currentMax.innerHTML = currentMaxValue + "ºC";
   currentMin.innerHTML = currentMinValue + "ºC";
   currentTemp.innerHTML = currentTempValue + "ºC";
@@ -128,6 +127,26 @@ function chooseIcon(response) {
       currentIcon.innerHTML = "🌫";
       break;
   }
+}
+
+let forecast = document.querySelector("#forecast");
+
+function showForecast() {
+  let forecastHTML = "";
+  let forecastDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
+  forecastDays.forEach(function (day) {
+    forecastHTML =
+      forecastHTML +
+      `<div class="col" id="tempcard">
+          <div class="row" id="day">${day}</div>
+          <div class="row" id="symbol">🌥</div>
+          <div class="row" id="temp">
+            <span><strong>21ºC</strong>/16ºC</span>
+          </div>
+        </div>`;
+  });
+
+  forecast.innerHTML = forecastHTML;
 }
 
 search.addEventListener("submit", enterCity);
@@ -190,6 +209,7 @@ function getCurrentLocation() {
 }
 
 getCurrentLocation();
+showForecast();
 
 let currentLocation = document.querySelector("#current-location");
 
