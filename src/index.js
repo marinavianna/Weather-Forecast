@@ -64,7 +64,7 @@ let days = [
 let day = days[now.getDay()];
 
 let currentDate = document.querySelector("#current-date");
-currentDate.innerHTML = `${day} ${hour}:${minute}`;
+currentDate.innerHTML = `Last updated: ${day} ${hour}:${minute}`;
 
 let search = document.querySelector("#search-form");
 let city = document.querySelector("h1");
