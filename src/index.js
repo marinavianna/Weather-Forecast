@@ -86,6 +86,10 @@ function showTemp(response) {
   currentMinValue = Math.round(response.data.main.temp_min);
   currentTempValue = Math.round(response.data.main.temp);
   tempText.innerHTML = response.data.weather[0].description;
+  windSpeed.innerHTML = `Wind speed: ${Math.round(
+    response.data.wind.speed * 3.6
+  )} km/h`;
+  console.log(response.data.wind.speed);
   currentMax.innerHTML = currentMaxValue + "ºC";
   currentMin.innerHTML = currentMinValue + "ºC";
   currentTemp.innerHTML = currentTempValue + "ºC";
@@ -137,6 +141,7 @@ let currentTempValue = currentTemp.innerHTML
   .replace("ºC", "")
   .replace("ºF", "");
 let tempText = document.querySelector("#temp-text");
+let windSpeed = document.querySelector("#wind-speed");
 
 let celsiusButton = document.querySelector("#celsius");
 
