@@ -53,6 +53,9 @@ function enterCity(event) {
 
 let weatherIcon = "";
 
+let lon;
+let lat;
+
 function showTemp(response) {
   currentMaxValue = Math.round(response.data.main.temp_max);
   currentMinValue = Math.round(response.data.main.temp_min);
@@ -61,20 +64,25 @@ function showTemp(response) {
   windSpeed.innerHTML = `Wind speed: ${Math.round(
     response.data.wind.speed * 3.6
   )} km/h`;
-  currentMax.innerHTML = currentMaxValue + "ºC";
+  currentMax.innerHTML = currentMaxValue + "ºC/";
   currentMin.innerHTML = currentMinValue + "ºC";
   currentTemp.innerHTML = currentTempValue + "ºC";
   city.innerHTML = response.data.name;
   weatherIcon = response.data.weather[0].icon;
   currentIcon.innerHTML = chooseIcon(weatherIcon);
-  let lon = response.data.coord.lon;
-  let lat = response.data.coord.lat;
+  lon = response.data.coord.lon;
+  lat = response.data.coord.lat;
   getDates(response);
   getForecast(lon, lat);
 }
 
 function getForecast(lon, lat) {
-  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+  let apiUrl;
+  if (currentMin.innerHTML.charAt(currentMin.innerHTML.length - 1) === "F") {
+    apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
+  } else {
+    apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+  }
   axios.get(apiUrl).then(showForecast);
 }
 
@@ -106,8 +114,25 @@ let forecast = document.querySelector("#forecast");
 function showForecast(response) {
   let forecastHTML = "";
   let forecastDays = response.data.daily.slice(1, 6);
-  forecastDays.forEach(function (daydata) {
-    forecastHTML += `<div class="col" id="tempcard">
+  if (currentMin.innerHTML.charAt(currentMin.innerHTML.length - 1) === "F") {
+    forecastDays.forEach(function (daydata) {
+      forecastHTML += `<div class="col" id="tempcard">
+          <div class="row" id="day">${
+            days[new Date(daydata.dt * 1000).getDay()]
+          }</div>
+          <div class="row" id="symbol">${chooseIcon(
+            daydata.weather[0].icon
+          )}</div>
+          <div class="row" id="temp">
+            <span><strong>${Math.round(
+              daydata.temp.max
+            )}ºF</strong>/${Math.round(daydata.temp.min)}ºF</span>
+          </div>
+        </div>`;
+    });
+  } else {
+    forecastDays.forEach(function (daydata) {
+      forecastHTML += `<div class="col" id="tempcard">
           <div class="row" id="day">${
             days[new Date(daydata.dt * 1000).getDay()]
           }</div>
@@ -120,7 +145,8 @@ function showForecast(response) {
             )}ºC</strong>/${Math.round(daydata.temp.min)}ºC</span>
           </div>
         </div>`;
-  });
+    });
+  }
   forecast.innerHTML = forecastHTML;
 }
 
@@ -145,9 +171,10 @@ function getCelsiusTemp(event) {
     currentMinValue = Math.round((currentMinValue - 32) / (9 / 5));
     currentMin.innerHTML = currentMinValue + "ºC";
     currentMaxValue = Math.round((currentMaxValue - 32) / (9 / 5));
-    currentMax.innerHTML = currentMaxValue + "ºC";
+    currentMax.innerHTML = currentMaxValue + "ºC/";
     currentTempValue = Math.round((currentTempValue - 32) / (9 / 5));
     currentTemp.innerHTML = currentTempValue + "ºC";
+    getForecast(lon, lat);
   }
 }
 
@@ -161,9 +188,10 @@ function getFahrenheitTemp(event) {
     currentMinValue = Math.round(currentMinValue * (9 / 5) + 32);
     currentMin.innerHTML = currentMinValue + "ºF";
     currentMaxValue = Math.round(currentMaxValue * (9 / 5) + 32);
-    currentMax.innerHTML = currentMaxValue + "ºF";
+    currentMax.innerHTML = currentMaxValue + "ºF/";
     currentTempValue = Math.round(currentTempValue * (9 / 5) + 32);
     currentTemp.innerHTML = currentTempValue + "ºF";
+    getForecast(lon, lat);
   }
 }
 
@@ -205,7 +233,6 @@ let day;
 
 function getDates(response) {
   now = new Date(response.data.dt * 1000);
-  console.log(now);
   hour = now.getHours();
 
   if (hour.toString().length === 1) {
