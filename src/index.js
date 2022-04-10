@@ -67,7 +67,7 @@ function showTemp(response) {
   currentMax.innerHTML = currentMaxValue + "ºC/";
   currentMin.innerHTML = currentMinValue + "ºC";
   currentTemp.innerHTML = currentTempValue + "ºC";
-  city.innerHTML = response.data.name;
+  city.innerHTML = response.data.name + ", " + response.data.sys.country;
   weatherIcon = response.data.weather[0].icon;
   currentIcon.innerHTML = chooseIcon(weatherIcon);
   lon = response.data.coord.lon;
