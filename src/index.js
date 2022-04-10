@@ -1,47 +1,44 @@
-let weather = {
-  paris: {
-    temp: 19.7,
-    humidity: 80,
-  },
-  tokyo: {
-    temp: 17.3,
-    humidity: 50,
-  },
-  lisbon: {
-    temp: 30.2,
-    humidity: 20,
-  },
-  "san francisco": {
-    temp: 20.9,
-    humidity: 100,
-  },
-  moscow: {
-    temp: -5,
-    humidity: 20,
-  },
-};
-
-/* let chosenCity = prompt("Enter a city");
-
-const result = weather[chosenCity];
-
-if (result === undefined) {
-  alert(
-    `Sorry, we don't know the weather for this city, try going to https://www.google.com/search?q=weather+${chosenCity.toLowerCase()}`
-  );
-} else {
-  let fahrenheit = result.temp * (9 / 5) + 32;
-  alert(
-    `It is currently ${Math.round(result.temp)}°C (${Math.round(
-      fahrenheit
-    )}°F) in ${chosenCity} with a humidity of ${result.humidity}%.`
-  );
-} */
-
 let search = document.querySelector("#search-form");
 let city = document.querySelector("h1");
 let apiKey = "c4b4eb71226a8aa7e7735dea09da11f4";
 let currentIcon = document.querySelector(".current-weather");
+let weatherIcon = "";
+let lon;
+let lat;
+let forecast = document.querySelector("#forecast");
+search.addEventListener("submit", enterCity);
+let currentMax = document.querySelector("#current-max");
+let currentMaxValue = currentMax.innerHTML.replace("ºC", "").replace("ºF", "");
+let currentMin = document.querySelector("#current-min");
+let currentMinValue = currentMin.innerHTML.replace("ºC", "").replace("ºF", "");
+let currentTemp = document.querySelector("#current-temp");
+let currentTempValue = currentTemp.innerHTML
+  .replace("ºC", "")
+  .replace("ºF", "");
+let tempText = document.querySelector("#temp-text");
+let windSpeed = document.querySelector("#wind-speed");
+let celsiusButton = document.querySelector("#celsius");
+celsiusButton.addEventListener("click", getCelsiusTemp);
+let fahrenheitButton = document.querySelector("#fahrenheit");
+fahrenheitButton.addEventListener("click", getFahrenheitTemp);
+let searchButton = document.querySelector("#search-addon");
+searchButton.addEventListener("click", enterCity);
+getCurrentLocation();
+let currentLocation = document.querySelector("#current-location");
+currentLocation.addEventListener("click", getCurrentLocation);
+let now;
+let hour;
+let minute;
+let days = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+let day;
 
 function enterCity(event) {
   event.preventDefault();
@@ -50,11 +47,6 @@ function enterCity(event) {
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${citySearch.value}&appid=${apiKey}&units=metric`;
   axios.get(apiUrl).then(showTemp);
 }
-
-let weatherIcon = "";
-
-let lon;
-let lat;
 
 function showTemp(response) {
   currentMaxValue = Math.round(response.data.main.temp_max);
@@ -109,8 +101,6 @@ function chooseIcon(icon) {
   }
 }
 
-let forecast = document.querySelector("#forecast");
-
 function showForecast(response) {
   let forecastHTML = "";
   let forecastDays = response.data.daily.slice(1, 6);
@@ -150,21 +140,6 @@ function showForecast(response) {
   forecast.innerHTML = forecastHTML;
 }
 
-search.addEventListener("submit", enterCity);
-
-let currentMax = document.querySelector("#current-max");
-let currentMaxValue = currentMax.innerHTML.replace("ºC", "").replace("ºF", "");
-let currentMin = document.querySelector("#current-min");
-let currentMinValue = currentMin.innerHTML.replace("ºC", "").replace("ºF", "");
-let currentTemp = document.querySelector("#current-temp");
-let currentTempValue = currentTemp.innerHTML
-  .replace("ºC", "")
-  .replace("ºF", "");
-let tempText = document.querySelector("#temp-text");
-let windSpeed = document.querySelector("#wind-speed");
-
-let celsiusButton = document.querySelector("#celsius");
-
 function getCelsiusTemp(event) {
   event.preventDefault();
   if (currentMin.innerHTML.charAt(currentMin.innerHTML.length - 1) === "F") {
@@ -177,10 +152,6 @@ function getCelsiusTemp(event) {
     getForecast(lon, lat);
   }
 }
-
-celsiusButton.addEventListener("click", getCelsiusTemp);
-
-let fahrenheitButton = document.querySelector("#fahrenheit");
 
 function getFahrenheitTemp(event) {
   event.preventDefault();
@@ -195,11 +166,6 @@ function getFahrenheitTemp(event) {
   }
 }
 
-fahrenheitButton.addEventListener("click", getFahrenheitTemp);
-
-let searchButton = document.querySelector("#search-addon");
-searchButton.addEventListener("click", enterCity);
-
 function myPosition(position) {
   let mylat = position.coords.latitude;
   let mylon = position.coords.longitude;
@@ -210,26 +176,6 @@ function myPosition(position) {
 function getCurrentLocation() {
   navigator.geolocation.getCurrentPosition(myPosition);
 }
-
-getCurrentLocation();
-
-let currentLocation = document.querySelector("#current-location");
-
-currentLocation.addEventListener("click", getCurrentLocation);
-
-let now;
-let hour;
-let minute;
-let days = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
-let day;
 
 function getDates(response) {
   now = new Date(response.data.dt * 1000);
