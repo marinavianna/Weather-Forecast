@@ -38,34 +38,6 @@ if (result === undefined) {
   );
 } */
 
-let now = new Date();
-let hour = now.getHours();
-
-if (hour.toString().length === 1) {
-  hour = "0" + hour;
-}
-
-let minute = now.getMinutes();
-
-if (minute.toString().length === 1) {
-  minute = "0" + minute;
-}
-
-let days = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
-
-let day = days[now.getDay()];
-
-let currentDate = document.querySelector("#current-date");
-currentDate.innerHTML = `Last updated: ${day} ${hour}:${minute}`;
-
 let search = document.querySelector("#search-form");
 let city = document.querySelector("h1");
 let apiKey = "c4b4eb71226a8aa7e7735dea09da11f4";
@@ -97,6 +69,7 @@ function showTemp(response) {
   currentIcon.innerHTML = chooseIcon(weatherIcon);
   let lon = response.data.coord.lon;
   let lat = response.data.coord.lat;
+  getDates(response);
   getForecast(lon, lat);
 }
 
@@ -215,3 +188,38 @@ getCurrentLocation();
 let currentLocation = document.querySelector("#current-location");
 
 currentLocation.addEventListener("click", getCurrentLocation);
+
+let now;
+let hour;
+let minute;
+let days = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+let day;
+
+function getDates(response) {
+  now = new Date(response.data.dt * 1000);
+  console.log(now);
+  hour = now.getHours();
+
+  if (hour.toString().length === 1) {
+    hour = "0" + hour;
+  }
+
+  minute = now.getMinutes();
+
+  if (minute.toString().length === 1) {
+    minute = "0" + minute;
+  }
+
+  day = days[now.getDay()];
+
+  let currentDate = document.querySelector("#current-date");
+  currentDate.innerHTML = `Last updated: ${day} ${hour}:${minute}`;
+}
